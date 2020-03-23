@@ -28,10 +28,8 @@ public class JobController{
         Job job = jobRepository.findById(id).orElse(null);
         if(job == null){
             System.out.println("Null Job Printed");
-
             return new JobDTO();
         }
-        System.out.println('2');
         JobDTO jobDTO = translator.jobToContract(job);
         return jobDTO;
     }
@@ -50,7 +48,7 @@ public class JobController{
         Job job;
         User user = new User();
         user = userRepository.findById(id).orElse(null);
-        job = new Job(newJob.getJobId(),newJob.getDescription(), user, null);
+        job = new Job(newJob.getJobId(),newJob.getDescription(), user);
         if(job.getUser() == null){
             return "Can not create job without a valid user ID";
         }

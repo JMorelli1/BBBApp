@@ -27,7 +27,9 @@ public class Translator {
         jobDTO.setDescription(job.getDescription());
         return jobDTO;
     }
+
     public User userToEntity(UserDTO userDTO){
+        
         User user = new User();
         user.setUserId(userDTO.getUserId());
         user.setFirstName(userDTO.getFirstName());

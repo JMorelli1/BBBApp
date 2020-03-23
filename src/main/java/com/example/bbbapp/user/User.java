@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,8 +15,6 @@ import lombok.Data;
 
 import com.example.bbbapp.job.Job;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import org.hibernate.annotations.ManyToAny;
 
 @Data
 @Entity
