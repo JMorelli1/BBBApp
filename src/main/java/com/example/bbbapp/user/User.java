@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -48,6 +49,14 @@ public class User{
         job.setUser(null);
     } 
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // private Set<Job> assignedJobs = new HashSet<>(0);
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedUsers")
+    private Set<Job> assignedJobs = new HashSet<>(0);
+
+    public void addAssignedJob(Job job){
+        assignedJobs.add(job);
+    }
+
+    public void removeAssignedJob(Job job){
+        assignedJobs.remove(job);
+    }
 }

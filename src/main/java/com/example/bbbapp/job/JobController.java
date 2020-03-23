@@ -3,6 +3,7 @@ package com.example.bbbapp.job;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,12 +44,12 @@ public class JobController{
         return jobs;
     }
  
-    @PostMapping(path="/createjob/{id}")
-    public @ResponseBody String createJob(@RequestBody JobDTO newJob, @PathVariable Integer id){
+    @PostMapping(path="/createpostedjob/{id}")
+    public @ResponseBody String createPostedJob(@RequestBody JobDTO newJob, @PathVariable Integer id){
         Job job;
         User user = new User();
         user = userRepository.findById(id).orElse(null);
-        job = new Job(newJob.getJobId(),newJob.getDescription(), user);
+        job = new Job(newJob.getJobId(),newJob.getDescription(), user, null);
         if(job.getUser() == null){
             return "Can not create job without a valid user ID";
         }
@@ -56,5 +57,22 @@ public class JobController{
         // user.addPostedJob(job);
         jobRepository.save(job);
         return "Job created successfully";
+    }
+
+    @PutMapping("/assignuser/{userId}")
+    public @ResponseBody String assignUser(@RequestBody Integer jobId, @PathVariable Integer userId){
+        
+        User user = userRepository.findById(userId).orElse(null);
+        Job job = jobRepository.findById(jobId).orElse(null);
+
+        if(user == null || job == null){
+            return "Error finding Job or User ID";
+        }
+        user.addAssignedJob(job);
+        job.addAssignedUser(user);
+        userRepository.save(user);
+        jobRepository.save(job);
+        
+        return "Successfully assigned user";
     }
 }

@@ -1,12 +1,17 @@
 package com.example.bbbapp.job;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -40,7 +45,18 @@ public class Job implements Serializable{
     @JoinColumn(name = "USER_ID")
     private User user; 
 
-    // @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    // private Set<User> assignedUsers = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(
+        name = "ASSIGNED_USERS",
+        joinColumns = @JoinColumn(name="JOB_ID"),
+        inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private Set<User> assignedUsers = new HashSet<>();
+    
+    public void addAssignedUser(User user){
+        assignedUsers.add(user);
+    }
 
+    public void removeAssignedUser(User user){
+        assignedUsers.remove(user);
+    }
 }

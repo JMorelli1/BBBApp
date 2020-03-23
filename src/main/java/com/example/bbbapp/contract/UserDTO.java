@@ -37,4 +37,15 @@ public class UserDTO{
         return postedJobs;
     }
 
+    @JsonManagedReference
+    @JsonProperty("assignedJobs")
+    private List<JobDTO> assignedJobs;
+
+    public List<JobDTO> getAssignedJobs(){
+        if(assignedJobs == null){
+            assignedJobs = new ArrayList<>();
+        }
+        return assignedJobs;
+    }
+
 }
