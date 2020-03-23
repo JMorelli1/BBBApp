@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class UserDTO{
 
     @JsonProperty("userId")
-    private Integer id; 
+    private Integer userId; 
 
     @JsonProperty("firstName")
     private String firstName;

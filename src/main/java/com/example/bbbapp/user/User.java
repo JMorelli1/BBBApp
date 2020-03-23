@@ -7,9 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,6 +18,8 @@ import lombok.Data;
 import com.example.bbbapp.job.Job;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.ManyToAny;
+
 @Data
 @Entity
 @Table(name= "USERS")
@@ -25,7 +27,7 @@ public class User{
 
     @Id
     @Column(name = "USER_ID")
-    private Integer idUser;
+    private Integer userId;
     
     @Column(name = "USER_FIRST_NAME")
     private String firstName;
@@ -50,6 +52,6 @@ public class User{
         job.setUser(null);
     } 
 
-    // @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, mappedBy = "user")
+    // @ManyToOne(fetch = FetchType.LAZY)
     // private Set<Job> assignedJobs = new HashSet<>(0);
 }

@@ -50,11 +50,12 @@ public class JobController{
         Job job;
         User user = new User();
         user = userRepository.findById(id).orElse(null);
-        job = new Job(newJob.getId(),newJob.getDescription(), user);
+        job = new Job(newJob.getJobId(),newJob.getDescription(), user, null);
         if(job.getUser() == null){
             return "Can not create job without a valid user ID";
         }
-        user.addPostedJob(job);
+        //Adding the User to the list of Jobs fixes the recursion?? Nope
+        // user.addPostedJob(job);
         jobRepository.save(job);
         return "Job created successfully";
     }
