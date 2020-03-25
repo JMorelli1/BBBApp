@@ -13,13 +13,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import com.example.bbbapp.job.Job;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
 @Table(name= "USERS")
+@EqualsAndHashCode(exclude="assignedJobs")
 public class User{
 
     @Id
@@ -35,7 +39,7 @@ public class User{
     @Column(name="USER_PHONE_NUM")
     private String phoneNumber;
 
-    @JsonManagedReference
+    @JsonManagedReference(value="posted_job")
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Job> postedJobs = new HashSet<>(0);
 
@@ -49,14 +53,18 @@ public class User{
         job.setUser(null);
     } 
 
+    // @JsonManagedReference(value="assigned_job")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedUsers")
     private Set<Job> assignedJobs = new HashSet<>(0);
 
     public void addAssignedJob(Job job){
         assignedJobs.add(job);
+        job.getAssignedUsers().add(this);
     }
 
     public void removeAssignedJob(Job job){
         assignedJobs.remove(job);
+        job.getAssignedUsers().remove(this);
+        //job.removeAssignedUser(this);
     }
 }

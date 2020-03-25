@@ -26,7 +26,6 @@ public class UserDTO{
     @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-    @JsonManagedReference
     @JsonProperty("postedJobs")
     private List<JobDTO> postedJobs;
 
@@ -37,7 +36,6 @@ public class UserDTO{
         return postedJobs;
     }
 
-    @JsonManagedReference
     @JsonProperty("assignedJobs")
     private List<JobDTO> assignedJobs;
 

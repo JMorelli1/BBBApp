@@ -17,11 +17,9 @@ public class JobDTO{
     @JsonProperty("description")
     private String description;
 
-    @JsonBackReference
     @JsonProperty("postedUser")
     private UserDTO user;
 
-    @JsonBackReference
     @JsonProperty("assignedUsers")
     private List<User> assignedUsers;
 

@@ -38,7 +38,7 @@ public class UserController{
         return users;
     }
 
-    @PostMapping(path="/create")
+    @PostMapping(path="/users")
     public @ResponseBody String addUser(@RequestBody UserDTO newUser){
 
         User user = new User();
@@ -47,7 +47,7 @@ public class UserController{
         return "User successfully created";
     }
 
-    @PutMapping(path="/updateuser/{id}")
+    @PutMapping(path="/users/{id}")
     public @ResponseBody String updateUser(@RequestBody User updatedUser, @PathVariable Integer id){
 
         User user = userRepository.findById(id).orElse(null);

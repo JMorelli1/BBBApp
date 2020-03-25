@@ -35,15 +35,24 @@ public class Translator {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
-        Set<Job> jobs = new HashSet<>();
-        Job job = new Job();
+        Set<Job> postedJobs = new HashSet<>();
+        Job postedJob;
         if(userDTO.getPostedJobs() != null){
         for (JobDTO jobDTO : userDTO.getPostedJobs()) {
-                job = jobToEntity(jobDTO);
-                jobs.add(job);
+            postedJob = jobToEntity(jobDTO);
+                postedJobs.add(postedJob);
             }
         }
-        user.setPostedJobs(jobs);
+        Set<Job> assignedJobs = new HashSet<>();
+        Job assignedJob = new Job();
+        if(userDTO.getPostedJobs() != null){
+        for (JobDTO jobDTO : userDTO.getPostedJobs()) {
+            assignedJob = jobToEntity(jobDTO);
+            assignedJobs.add(assignedJob);
+            }
+        }
+        user.setAssignedJobs(assignedJobs);
+        user.setPostedJobs(postedJobs);
         return user;
     }
 
@@ -55,13 +64,20 @@ public class Translator {
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());
-        List<JobDTO> jobs = new ArrayList<>();
-        JobDTO jobDTO;
+        List<JobDTO> postedJobs = new ArrayList<>();
+        JobDTO postedJobDTO;
         for (Job job : user.getPostedJobs()) {
-            jobDTO = jobToContract(job);
-            jobs.add(jobDTO);
+            postedJobDTO = jobToContract(job);
+            postedJobs.add(postedJobDTO);
         }
-        userDTO.setPostedJobs(jobs);
+        List<JobDTO> assignedJobs = new ArrayList<>();
+        JobDTO assignedJobDTO;
+        for (Job job : user.getAssignedJobs()) {
+            assignedJobDTO = jobToContract(job);
+            assignedJobs.add(assignedJobDTO);
+        }
+        userDTO.setPostedJobs(postedJobs);
+        userDTO.setAssignedJobs(assignedJobs);
         return userDTO;
     }
 } 

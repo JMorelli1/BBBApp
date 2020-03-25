@@ -44,7 +44,7 @@ public class JobController{
         return jobs;
     }
  
-    @PostMapping(path="/createpostedjob/{id}")
+    @PostMapping(path="/jobs/{id}")
     public @ResponseBody String createPostedJob(@RequestBody JobDTO newJob, @PathVariable Integer id){
         Job job;
         User user = new User();
@@ -59,19 +59,24 @@ public class JobController{
         return "Job created successfully";
     }
 
-    @PutMapping("/assignuser/{userId}")
-    public @ResponseBody String assignUser(@RequestBody Integer jobId, @PathVariable Integer userId){
+    @PutMapping("/jobs/{userId}/{jobId}")
+    public @ResponseBody String assignUser(@PathVariable Integer userId, @PathVariable Integer jobId){
         
+        System.out.println(userId);
         User user = userRepository.findById(userId).orElse(null);
+        System.out.println(jobId);
         Job job = jobRepository.findById(jobId).orElse(null);
+
+        System.out.println(user);
+        System.out.println(job);
 
         if(user == null || job == null){
             return "Error finding Job or User ID";
         }
         user.addAssignedJob(job);
-        job.addAssignedUser(user);
+        // job.addAssignedUser(user);
         userRepository.save(user);
-        jobRepository.save(job);
+        // jobRepository.save(job);
         
         return "Successfully assigned user";
     }
