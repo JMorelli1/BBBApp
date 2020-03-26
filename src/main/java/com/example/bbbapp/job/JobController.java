@@ -1,5 +1,7 @@
 package com.example.bbbapp.job;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,76 +10,62 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-import com.example.bbbapp.user.*;
 import com.example.bbbapp.contract.*;
+import com.example.bbbapp.exception.BusinessException;
 
 @RestController
 @RequiredArgsConstructor
 public class JobController{
 
-    private final JobRepository jobRepository;
-    private final UserRepository userRepository;
+    private final JobService jobService;
     private final Translator translator;
 
-    @GetMapping(path="/jobs/{id}")
-    public @ResponseBody JobDTO getJob(@PathVariable Integer id){
-        System.out.println(id);
-        Job job = jobRepository.findById(id).orElse(null);
-        if(job == null){
-            System.out.println("Null Job Printed");
-            return new JobDTO();
-        }
+    @GetMapping(path="/jobs/{jobId}")
+    public ResponseEntity<JobDTO> getJob(@PathVariable Integer jobId) throws BusinessException{
+        Job job = jobService.getJob(jobId);
         JobDTO jobDTO = translator.jobToContract(job);
-        return jobDTO;
+        return ok().body(jobDTO);
     }
 
     @GetMapping(path="/jobs")
     public @ResponseBody Iterable<JobDTO> getAllJobs(){
         List<JobDTO> jobs = new ArrayList<>();
-        for (Job job: jobRepository.findAll()) {
+        for (Job job: jobService.getAllJobs()) {
             jobs.add(translator.jobToContract(job));
         }
         return jobs;
     }
  
-    @PostMapping(path="/jobs/{id}")
-    public @ResponseBody String createPostedJob(@RequestBody JobDTO newJob, @PathVariable Integer id){
-        Job job;
-        User user = new User();
-        user = userRepository.findById(id).orElse(null);
-        job = new Job(newJob.getJobId(),newJob.getDescription(), user, null);
-        if(job.getUser() == null){
-            return "Can not create job without a valid user ID";
-        }
-        //Adding the User to the list of Jobs fixes the recursion?? Nope
-        // user.addPostedJob(job);
-        jobRepository.save(job);
-        return "Job created successfully";
+    @PutMapping(path="/jobs")
+    public ResponseEntity<String> updateJob(@RequestBody JobDTO updatedJob) throws BusinessException{
+        Job job = translator.jobToEntity(updatedJob);
+        jobService.updateJob(job, job.getJobId());
+        return ok().body("Successfully updated job");
     }
 
+    @PostMapping(path="/jobs/{userId}")
+    public ResponseEntity<String> createJob(@RequestBody JobDTO newJob, @PathVariable Integer userId) throws BusinessException{
+        Job job = translator.jobToEntity(newJob);
+        jobService.createJob(job, userId);
+        return ok().body("Job successfully created");
+    }
+
+    @DeleteMapping(path="/jobs/{jobId}")
+    public ResponseEntity<String> deleteJob(@PathVariable Integer jobId) throws BusinessException{
+        jobService.deleteJob(jobId);
+        return ok().body("Successfully deleted job");
+    }
+
+
     @PutMapping("/jobs/{userId}/{jobId}")
-    public @ResponseBody String assignUser(@PathVariable Integer userId, @PathVariable Integer jobId){
-        
-        System.out.println(userId);
-        User user = userRepository.findById(userId).orElse(null);
-        System.out.println(jobId);
-        Job job = jobRepository.findById(jobId).orElse(null);
-
-        System.out.println(user);
-        System.out.println(job);
-
-        if(user == null || job == null){
-            return "Error finding Job or User ID";
-        }
-        user.addAssignedJob(job);
-        // job.addAssignedUser(user);
-        userRepository.save(user);
-        // jobRepository.save(job);
-        
-        return "Successfully assigned user";
+    public ResponseEntity<String> assignUser(@PathVariable Integer userId, @PathVariable Integer jobId) throws BusinessException{
+        jobService.assignUser(jobId, userId);
+        return ok().body("Successfully assigned user");
     }
 }
