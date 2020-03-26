@@ -4,6 +4,7 @@ import com.example.bbbapp.contract.*;
 import com.example.bbbapp.exception.BusinessException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,20 +44,25 @@ public class UserController{
     }
 
     @PostMapping(path="/users")
-    public @ResponseBody String addUser(@RequestBody UserDTO newUser){
+    public ResponseEntity<String> addUser(@RequestBody UserDTO newUser) throws BusinessException{
 
-        User user = new User();
-        user = translator.userToEntity(newUser);
+        User user = translator.userToEntity(newUser);
         userService.addUser(user);
-        return "User successfully created";
+        return ok().body("User successfully created");
     }
 
-    @PutMapping(path="/users/{id}")
-    public @ResponseBody String updateUser(@RequestBody UserDTO updatedUser, @PathVariable Integer userId){
+    @PutMapping(path="/users/{userId}")
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO updatedUser, @PathVariable Integer userId) throws BusinessException{
 
         User user = translator.userToEntity(updatedUser);
         userService.updateUser(userId, user);
-        return "Successfully updated user";
+        return ok().body("Successfully updated user");
         
+    }
+
+    @DeleteMapping(path="/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) throws BusinessException{
+        userService.deleteUser(userId);
+        return ok().body("Successfully delete user");
     }
 }
