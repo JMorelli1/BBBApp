@@ -14,16 +14,14 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import com.example.bbbapp.job.Job;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
 @Table(name= "USERS")
-@EqualsAndHashCode(exclude="assignedJobs")
+@EqualsAndHashCode(exclude={"assignedJobs","postedJobs"})
 public class User{
 
     @Id

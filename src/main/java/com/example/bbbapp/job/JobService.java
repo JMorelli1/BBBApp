@@ -52,33 +52,4 @@ public class JobService{
             throw new BusinessException("Error deleting job at ID: " + jobId +"\nCould not find Job at that ID");
         }
     }
-
-    //Managing Assigned Users
-
-    public void assignUser(Integer jobId, Integer userId) throws BusinessException{
-
-        User user = userRepository.findById(userId).orElse(null);
-        Job job = jobRepository.findById(jobId).orElse(null);
-        if(user == null){
-            throw new BusinessException("Error assigning user to job, couldn't find User at ID: " + userId);
-        }
-        if(job == null){
-            throw new BusinessException("Error assigning user to job. couldn't find Job at ID: " + jobId);
-        }
-        user.addAssignedJob(job);
-        userRepository.save(user);
-    }
-
-    public void removeAssignedUser(Integer jobId, Integer userId) throws BusinessException{
-        User user = userRepository.findById(userId).orElse(null);
-        Job job = jobRepository.findById(jobId).orElse(null);
-        if(user == null){
-            throw new BusinessException("Error removing assigned user to job, couldn't find User at ID: " + userId);
-        }
-        if(job == null){
-            throw new BusinessException("Error removing assigned user to job. couldn't find Job at ID: " + jobId);
-        }
-        user.removeAssignedJob(job);
-        userRepository.save(user);
-    }
 }

@@ -61,11 +61,4 @@ public class JobController{
         jobService.deleteJob(jobId);
         return ok().body("Successfully deleted job");
     }
-
-
-    @PutMapping("/jobs/{userId}/{jobId}")
-    public ResponseEntity<String> assignUser(@PathVariable Integer userId, @PathVariable Integer jobId) throws BusinessException{
-        jobService.assignUser(jobId, userId);
-        return ok().body("Successfully assigned user");
-    }
 }

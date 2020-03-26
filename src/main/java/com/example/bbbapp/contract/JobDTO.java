@@ -2,7 +2,6 @@ package com.example.bbbapp.contract;
 
 import java.util.ArrayList;
 import com.example.bbbapp.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

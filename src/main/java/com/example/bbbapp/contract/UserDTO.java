@@ -1,6 +1,5 @@
 package com.example.bbbapp.contract;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;

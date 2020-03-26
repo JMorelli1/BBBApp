@@ -23,7 +23,6 @@ import lombok.ToString;
 
 import com.example.bbbapp.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
