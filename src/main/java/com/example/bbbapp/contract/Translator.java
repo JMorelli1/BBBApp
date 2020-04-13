@@ -14,9 +14,18 @@ public class Translator {
 
         Job job = new Job();
         job.setJobId(jobDTO.getJobId());
-        System.out.println(job.getJobId());
+        job.setJobTitle(jobDTO.getJobTitle());
         job.setDescription(jobDTO.getDescription());
-        System.out.println(job.getDescription());
+
+        job.setUser(singleUserToEntity(jobDTO.getUser()));
+
+        Set<User> assignedUsers = new HashSet<>();
+        User user;
+        for(UserDTO userDTO : jobDTO.getAssignedUsers()){
+            user = singleUserToEntity(userDTO);
+            assignedUsers.add(user);
+        }
+        job.setAssignedUsers(assignedUsers);
         return job;
     }
 
@@ -24,7 +33,19 @@ public class Translator {
         
         JobDTO jobDTO = new JobDTO();
         jobDTO.setJobId(job.getJobId());
+        jobDTO.setJobTitle(job.getJobTitle());
         jobDTO.setDescription(job.getDescription());
+
+        jobDTO.setUser(singleUserToContract(job.getUser()));
+
+        List<UserDTO> assignedUsers = new ArrayList<>();
+        UserDTO userDTO;
+        for(User user : job.getAssignedUsers()){
+            userDTO = singleUserToContract(user);
+            assignedUsers.add(userDTO);
+        }
+        jobDTO.setAssignedUsers(assignedUsers);
+
         return jobDTO;
     }
     
@@ -79,5 +100,25 @@ public class Translator {
         userDTO.setPostedJobs(postedJobs);
         userDTO.setAssignedJobs(assignedJobs);
         return userDTO;
+    }
+
+    private UserDTO singleUserToContract(User user){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(user.getUserId());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        return userDTO;
+    }
+
+    private User singleUserToEntity(UserDTO userDTO){
+        User user = new User();
+        user.setUserId(userDTO.getUserId());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        return user;
     }
 } 

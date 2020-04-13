@@ -32,6 +32,7 @@ public class JobService{
             throw new BusinessException("Error updating Job at ID: " + jobId);
         }
         job.setDescription(updatedJob.getDescription());
+        job.setJobTitle(updatedJob.getJobTitle());
         jobRepository.save(job);
     }
 

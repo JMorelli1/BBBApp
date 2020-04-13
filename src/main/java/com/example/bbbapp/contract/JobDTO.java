@@ -13,6 +13,9 @@ public class JobDTO{
     @JsonProperty("jobId")
     private Integer jobId;
 
+    @JsonProperty("jobTitle")
+    private String jobTitle;
+
     @JsonProperty("description")
     private String description;
 
@@ -20,9 +23,9 @@ public class JobDTO{
     private UserDTO user;
 
     @JsonProperty("assignedUsers")
-    private List<User> assignedUsers;
+    private List<UserDTO> assignedUsers;
 
-    public List<User> getAssignedUsers(){
+    public List<UserDTO> getAssignedUsers(){
         if(assignedUsers == null){
             return new ArrayList<>();
         }

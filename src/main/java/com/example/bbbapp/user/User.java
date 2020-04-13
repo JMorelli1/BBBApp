@@ -51,7 +51,6 @@ public class User{
         job.setUser(null);
     } 
 
-    // @JsonManagedReference(value="assigned_job")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedUsers")
     private Set<Job> assignedJobs = new HashSet<>(0);
 
@@ -63,6 +62,5 @@ public class User{
     public void removeAssignedJob(Job job){
         assignedJobs.remove(job);
         job.getAssignedUsers().remove(this);
-        //job.removeAssignedUser(this);
     }
 }

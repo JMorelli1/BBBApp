@@ -38,6 +38,9 @@ public class Job implements Serializable{
     @Column(name = "JOB_ID")
     private Integer jobId;
 
+    @Column(name="JOB_TITLE")
+    private String jobTitle;
+
     @Column(name = "JOB_DESCRIPTION")
     private String description;
 

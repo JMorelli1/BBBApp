@@ -28,7 +28,7 @@ public class UserController{
 
 
     @GetMapping(path="/users/{userId}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Integer userId) throws BusinessException{
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer userId) throws BusinessException{
         User user = userService.getUser(userId);
         UserDTO userDTO = translator.userToContract(user);
         return ok().body(userDTO);
