@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -29,32 +31,32 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "JOBS")
 @AllArgsConstructor
 @NoArgsConstructor
-//Lombok doesn't not to create a hash code for the user, this caused the infinite recursion issue
-@EqualsAndHashCode(exclude="user")
-@ToString(exclude = {"user","assignedUsers"})
-public class Job implements Serializable{
+// Lombok doesn't not to create a hash code for the user, this caused the
+// infinite recursion issue
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = { "user", "assignedUsers" })
+public class Job implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "JOB_ID")
     private Integer jobId;
 
-    @Column(name="JOB_TITLE")
+    @Column(name = "JOB_TITLE")
     private String jobTitle;
 
     @Column(name = "JOB_DESCRIPTION")
     private String description;
 
-    //Infinite recursions with the JSON call unless told not to reference bi-directionally 
-    @JsonBackReference(value="posted_job")
+    // Infinite recursions with the JSON call unless told not to reference
+    // bi-directionally
+    @JsonBackReference(value = "posted_job")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
-    private User user; 
+    private User user;
 
-    //@JsonBackReference(value="assigned_job")
+    // @JsonBackReference(value="assigned_job")
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(
-        name = "ASSIGNED_USERS",
-        joinColumns = @JoinColumn(name="JOB_ID"),
-        inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    @JoinTable(name = "ASSIGNED_USERS", joinColumns = @JoinColumn(name = "JOB_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private Set<User> assignedUsers = new HashSet<>();
 }

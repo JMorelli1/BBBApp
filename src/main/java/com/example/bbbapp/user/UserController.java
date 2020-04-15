@@ -21,47 +21,49 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController{
+public class UserController {
 
     private final Translator translator;
     private final UserService userService;
 
-
-    @GetMapping(path="/users/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer userId) throws BusinessException{
+    @GetMapping(path = "/users/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer userId) throws BusinessException {
         User user = userService.getUser(userId);
         UserDTO userDTO = translator.userToContract(user);
         return ok().body(userDTO);
     }
- 
-    @GetMapping(path="/users")
-    public @ResponseBody Iterable<UserDTO> getAllUsers(){
+
+    @GetMapping(path = "/users")
+    public @ResponseBody Iterable<UserDTO> getAllUsers() {
+
         List<UserDTO> users = new ArrayList<>();
-        for (User user: userService.getAllUsers()) {
+        for (User user : userService.getAllUsers()) {
             users.add(translator.userToContract(user));
         }
         return users;
     }
 
-    @PostMapping(path="/users")
-    public ResponseEntity<String> addUser(@RequestBody UserDTO newUser) throws BusinessException{
+    @PostMapping(path = "/users")
+    public ResponseEntity<String> addUser(@RequestBody UserDTO newUser) throws BusinessException {
 
         User user = translator.userToEntity(newUser);
         userService.addUser(user);
         return ok().body("User successfully created");
     }
 
-    @PutMapping(path="/users/{userId}")
-    public ResponseEntity<String> updateUser(@RequestBody UserDTO updatedUser, @PathVariable Integer userId) throws BusinessException{
+    @PutMapping(path = "/users/{userId}")
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO updatedUser, @PathVariable Integer userId)
+            throws BusinessException {
 
         User user = translator.userToEntity(updatedUser);
         userService.updateUser(userId, user);
         return ok().body("Successfully updated user");
-        
+
     }
 
-    @DeleteMapping(path="/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) throws BusinessException{
+    @DeleteMapping(path = "/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) throws BusinessException {
+
         userService.deleteUser(userId);
         return ok().body("Successfully delete user");
     }

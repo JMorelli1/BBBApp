@@ -10,18 +10,17 @@ import java.util.*;
 @Component
 public class Translator {
 
-    public Job jobToEntity(JobDTO jobDTO){
+    public Job jobToEntity(JobDTO jobDTO) {
 
         Job job = new Job();
         job.setJobId(jobDTO.getJobId());
         job.setJobTitle(jobDTO.getJobTitle());
         job.setDescription(jobDTO.getDescription());
-
         job.setUser(singleUserToEntity(jobDTO.getUser()));
 
         Set<User> assignedUsers = new HashSet<>();
         User user;
-        for(UserDTO userDTO : jobDTO.getAssignedUsers()){
+        for (UserDTO userDTO : jobDTO.getAssignedUsers()) {
             user = singleUserToEntity(userDTO);
             assignedUsers.add(user);
         }
@@ -29,8 +28,8 @@ public class Translator {
         return job;
     }
 
-    public JobDTO jobToContract(Job job){
-        
+    public JobDTO jobToContract(Job job) {
+
         JobDTO jobDTO = new JobDTO();
         jobDTO.setJobId(job.getJobId());
         jobDTO.setJobTitle(job.getJobTitle());
@@ -40,7 +39,7 @@ public class Translator {
 
         List<UserDTO> assignedUsers = new ArrayList<>();
         UserDTO userDTO;
-        for(User user : job.getAssignedUsers()){
+        for (User user : job.getAssignedUsers()) {
             userDTO = singleUserToContract(user);
             assignedUsers.add(userDTO);
         }
@@ -48,8 +47,8 @@ public class Translator {
 
         return jobDTO;
     }
-    
-    public User userToEntity(UserDTO userDTO){
+
+    public User userToEntity(UserDTO userDTO) {
         User user = new User();
         user.setUserId(userDTO.getUserId());
         user.setFirstName(userDTO.getFirstName());
@@ -58,18 +57,18 @@ public class Translator {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         Set<Job> postedJobs = new HashSet<>();
         Job postedJob;
-        if(userDTO.getPostedJobs() != null){
-        for (JobDTO jobDTO : userDTO.getPostedJobs()) {
-            postedJob = jobToEntity(jobDTO);
+        if (userDTO.getPostedJobs() != null) {
+            for (JobDTO jobDTO : userDTO.getPostedJobs()) {
+                postedJob = jobToEntity(jobDTO);
                 postedJobs.add(postedJob);
             }
         }
         Set<Job> assignedJobs = new HashSet<>();
         Job assignedJob = new Job();
-        if(userDTO.getPostedJobs() != null){
-        for (JobDTO jobDTO : userDTO.getPostedJobs()) {
-            assignedJob = jobToEntity(jobDTO);
-            assignedJobs.add(assignedJob);
+        if (userDTO.getPostedJobs() != null) {
+            for (JobDTO jobDTO : userDTO.getPostedJobs()) {
+                assignedJob = jobToEntity(jobDTO);
+                assignedJobs.add(assignedJob);
             }
         }
         user.setAssignedJobs(assignedJobs);
@@ -77,7 +76,7 @@ public class Translator {
         return user;
     }
 
-    public UserDTO userToContract(User user){
+    public UserDTO userToContract(User user) {
 
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
@@ -102,7 +101,7 @@ public class Translator {
         return userDTO;
     }
 
-    private UserDTO singleUserToContract(User user){
+    private UserDTO singleUserToContract(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
         userDTO.setFirstName(user.getFirstName());
@@ -112,7 +111,10 @@ public class Translator {
         return userDTO;
     }
 
-    private User singleUserToEntity(UserDTO userDTO){
+    private User singleUserToEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return new User();
+        }
         User user = new User();
         user.setUserId(userDTO.getUserId());
         user.setFirstName(userDTO.getFirstName());
@@ -121,4 +123,4 @@ public class Translator {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         return user;
     }
-} 
+}

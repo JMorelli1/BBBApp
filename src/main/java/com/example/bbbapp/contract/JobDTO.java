@@ -1,14 +1,13 @@
 package com.example.bbbapp.contract;
 
 import java.util.ArrayList;
-import com.example.bbbapp.user.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import lombok.Data;
 
 @Data
-public class JobDTO{
+public class JobDTO {
 
     @JsonProperty("jobId")
     private Integer jobId;
@@ -25,8 +24,8 @@ public class JobDTO{
     @JsonProperty("assignedUsers")
     private List<UserDTO> assignedUsers;
 
-    public List<UserDTO> getAssignedUsers(){
-        if(assignedUsers == null){
+    public List<UserDTO> getAssignedUsers() {
+        if (assignedUsers == null) {
             return new ArrayList<>();
         }
         return assignedUsers;
